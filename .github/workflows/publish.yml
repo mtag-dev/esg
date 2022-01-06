@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Store release version for later use
       env:
-        VERSION: ${{ CI_COMMIT_TAG }}
+        VERSION: $CI_COMMIT_TAG
       run: |
         mkdir -p dist/
         echo "${VERSION}" > dist/VERSION
