@@ -1,0 +1,37 @@
+---
+name: Test Suite
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  tests:
+    name: "Python ${{ matrix.python-version }} ${{ matrix.os }}"
+    runs-on: "${{ matrix.os }}"
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10"]
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "${{ matrix.python-version }}"
+      - name: "Install dependencies"
+        run: "make install-dev"
+        shell: bash
+      - name: "Run linting checks"
+        run: "make lint"
+        shell: bash
+      - name: "Build package & docs"
+        run: "make build"
+        shell: bash
+      - name: "Run tests"
+        run: "make test"
+        shell: bash
+      - name: "Enforce coverage"
+        run: "make coverage"
+        shell: bash

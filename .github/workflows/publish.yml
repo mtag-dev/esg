@@ -1,0 +1,141 @@
+---
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Store release version for later use
+      env:
+        VERSION: ${{ CI_COMMIT_TAG }}
+      run: |
+        mkdir -p dist/
+        echo "${VERSION}" > dist/VERSION
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist/
+
+  build-sdist:
+    needs: prepare
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 50
+        submodules: true
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+
+    - name: Build source distribution
+      run: |
+        python -m pip install -U setuptools wheel pip
+        python setup.py sdist
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist/*.tar.*
+
+  build-wheels:
+    needs: prepare
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        cibw_arch: ["auto64", "aarch64", "universal2"]
+        cibw_python:
+          - "cp39-*"
+          - "cp310-*"
+        exclude:
+          - os: ubuntu-latest
+            cibw_arch: universal2
+          - os: macos-latest
+            cibw_arch: aarch64
+          - os: windows-latest
+            cibw_arch: universal2
+          - os: windows-latest
+            cibw_arch: aarch64
+
+    defaults:
+      run:
+        shell: bash
+
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: 1
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 50
+        submodules: true
+
+    - name: Set up QEMU
+      if: matrix.os == 'ubuntu-latest' && matrix.cibw_arch == 'aarch64'
+      uses: docker/setup-qemu-action@v1
+      with:
+        platforms: arm64
+
+    - uses: pypa/cibuildwheel@v2.2.2
+      env:
+        CIBW_BUILD_VERBOSITY: 1
+        CIBW_BUILD: ${{ matrix.cibw_python }}
+        CIBW_ARCHS: ${{ matrix.cibw_arch }}
+        CIBW_TEST_EXTRAS: "test,standart"
+        CIBW_TEST_COMMAND: "python {project}/tests/__init__.py"
+        CIBW_TEST_COMMAND_WINDOWS: "python {project}\\tests\\__init__.py"
+        CIBW_TEST_SKIP: "*universal2:arm64"
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: wheelhouse/*.whl
+
+  publish:
+    needs: [build-sdist, build-wheels]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 5
+        submodules: false
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: dist
+        path: dist/
+
+    - name: Extract Release Version
+      id: relver
+      run: |
+        set -e
+        echo ::set-output name=version::$(cat dist/VERSION)
+        rm dist/VERSION
+
+    - name: Publish Github Release
+      uses: elprans/gh-action-create-release@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.relver.outputs.version }}
+        release_name: v${{ steps.relver.outputs.version }}
+        target: ${{ github.event.pull_request.base.ref }}
+        body: ${{ github.event.pull_request.body }}
+        draft: false
+
+    - run: |
+        ls -al dist/
+    - name: Upload to PyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_TOKEN }}
