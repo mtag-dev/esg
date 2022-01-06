@@ -313,6 +313,7 @@ def test_keepalive(protocol_cls, event_loop):
         assert protocol.is_expired(time.time())
         protocol.shutdown()
         protocol.loop.run_one()
+        protocol.loop.run_until_complete(asyncio.sleep(0.2))
         assert protocol.transport.is_closing()
 
 

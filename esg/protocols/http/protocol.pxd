@@ -46,7 +46,7 @@ cdef class Protocol:
         int response_complete
         int expected_content_length
 
-
+        int request_processing
         bytes body
         int more_body
         int disconnected

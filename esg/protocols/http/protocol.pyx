@@ -149,6 +149,7 @@ cdef class Protocol:
         self.expected_content_length = 0
 
         self.idle = 0
+        self.request_processing = False
 
         self._last_error = None
 
@@ -230,6 +231,7 @@ cdef class Protocol:
     #         self._proto_on_chunk_complete()
 
     cdef _on_url(self, url):
+        self.request_processing = True
         cdef:
             Py_buffer py_buf
             char* buf_data
@@ -426,7 +428,7 @@ cdef class Protocol:
         """
         Called by the server to commence a graceful shutdown.
         """
-        if self.response_complete or not self.response_started:
+        if not self.request_processing:
             if not self._transport.is_closing():
                 self._transport.close()
         else:
@@ -448,6 +450,8 @@ cdef class Protocol:
         self.flow.resume_writing()
 
     def is_expired(self, now):
+        if self.request_processing:
+            return False
         return self.idle > 0 and now - self.idle > self.timeout_keep_alive
 
     def data_received(self, data):
@@ -685,6 +689,7 @@ cdef class Protocol:
                 if self.expected_content_length != 0:
                     raise RuntimeError("Response content shorter than Content-Length")
                 self.response_complete = True
+                self.request_processing = False
 
                 if self.flow.read_paused:
                     self.flow.resume_reading()
@@ -693,13 +698,11 @@ cdef class Protocol:
                     self.message_event.set_result(True)
 
                 if not self.keep_alive and not self._transport.is_closing():
+                    if self.flow.write_paused:
+                        await self.flow.drain()
                     self._transport.close()
 
                 self.server_state.total_requests += 1
-
-                if self._transport.is_closing():
-                    return
-
                 self.idle = self.server_state.time
 
         else:

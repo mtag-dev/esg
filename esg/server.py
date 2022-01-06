@@ -51,7 +51,7 @@ class ServerState:
 
     def __init__(self) -> None:
         self.total_requests = 0
-        self.time = time.time()
+        self.time = int(time.time())
         self.connections: Set["Protocols"] = set()
         self.tasks: Set[asyncio.Task] = set()
         self.default_headers: List[Tuple[bytes, bytes]] = []
@@ -262,13 +262,13 @@ class Server:
             else:
                 date_header = []
 
-            self.server_state.time = time.time()
             for connection in self.server_state.connections.copy():
                 if isinstance(connection, Protocol) and connection.is_expired(
                     self.server_state.time
                 ):
                     connection.shutdown()
 
+            self.server_state.time = int(time.time())
             self.server_state.default_headers = (
                 date_header + self.config.encoded_headers
             )
