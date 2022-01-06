@@ -17,7 +17,7 @@ class ESGWorker(Worker):
     rather than a WSGI callable.
     """
 
-    CONFIG_KWARGS = {"loop": "auto", "http": "auto"}
+    CONFIG_KWARGS = {"loop": "auto"}
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super(ESGWorker, self).__init__(*args, **kwargs)
@@ -86,7 +86,3 @@ class ESGWorker(Worker):
 
     async def callback_notify(self) -> None:
         self.notify()
-
-
-class ESGH11Worker(ESGWorker):
-    CONFIG_KWARGS = {"loop": "asyncio", "http": "h11"}
