@@ -121,17 +121,6 @@ jobs:
         echo ::set-output name=version::$(cat dist/VERSION)
         rm dist/VERSION
 
-    - name: Publish Github Release
-      uses: elprans/gh-action-create-release@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ steps.relver.outputs.version }}
-        release_name: v${{ steps.relver.outputs.version }}
-        target: ${{ github.event.pull_request.base.ref }}
-        body: ${{ github.event.pull_request.body }}
-        draft: false
-
     - run: |
         ls -al dist/
     - name: Upload to PyPI
