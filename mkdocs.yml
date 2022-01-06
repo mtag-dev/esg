@@ -1,5 +1,5 @@
 site_name: ESG
-site_description: Low latency ESGI server.
+site_description: Low latency ASGI server.
 
 theme:
   name: "material"

@@ -1,5 +1,5 @@
 <p align="center">
-<em>Low latency ESGI server.</em>
+<em>Low latency ASGI server.</em>
 </p>
 
 ---
@@ -11,11 +11,11 @@
 **Documentation**: [https://esg.mtag.dev](https://esg.mtag.dev)
 
 
-ESG is a lightning-fast ESGI server implementation, using [uvloop] and [httptools].
+ESG is a speed-oriented ASGI server implementation.
 
-Implements application server for low latency asynchronous Python Web-frameworks.
+Implements application server for asynchronous Python Web-frameworks.
 
-Please read [ESGI specification] 
+Please read [ASGI specification] 
 
 Supports HTTP/1.1 and WebSockets.
 
@@ -49,10 +49,7 @@ Moreover, "optional extras" means that:
 - `PyYAML` will be installed to allow you to provide a `.yaml` file to `--log-config`, if desired.
 
 
-#### ESGI application example
-
-
-#### ASGI application example (Deprecated)
+#### ASGI application example
 
 Put following code in `example.py`:
 
@@ -83,4 +80,4 @@ $ esg example:app
 
 [uvloop]: https://github.com/MagicStack/uvloop
 [httptools]: https://github.com/MagicStack/httptools
-[ESGI specification]: https://esgi.mtag.dev
+[ASGI specification]: https://asgi.readthedocs.io/en/latest/

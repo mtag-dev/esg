@@ -1,5 +1,5 @@
 <p align="center">
-<em>Low latency ESGI server.</em>
+<em>Low latency ASGI server.</em>
 </p>
 
 <p align="center">
@@ -15,13 +15,11 @@
 
 # Introduction
 
+ESG is a speed-oriented ASGI server implementation.
 
+Implements application server for asynchronous Python Web-frameworks.
 
-ESG is a lightning-fast ESGI server implementation, using [uvloop] and [httptools].
-
-Implements application server for low latency asynchronous Python Web-frameworks.
-
-Please read [ESGI specification] 
+Please read [ASGI specification] 
 
 Supports HTTP/1.1 and WebSockets.
 
@@ -237,11 +235,7 @@ def create_app():
 $ esg --factory example:create_app
 ```
 
-## The ESGI interface
-
-ESG uses the [ESGI specification] for interacting with an ESGI application.
-
-## The ASGI interface (deprecated)
+## The ASGI interface
 
 ESG uses the [ASGI specification][asgi] for interacting with an ASGI application.
 
@@ -509,4 +503,3 @@ Its most distinctive features are built-in support for dependency injection, aut
 [hypercorn]: https://gitlab.com/pgjones/hypercorn
 [uvloop_docs]: https://uvloop.readthedocs.io/
 [httptools_vs_h11]: https://github.com/python-hyper/h11/issues/9
-[ESGI specification]: https://esgi.mtag.dev
