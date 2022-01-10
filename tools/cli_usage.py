@@ -63,7 +63,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    paths = [Path("docs", "index.md"), Path("docs", "deployment.md")]
+    paths = [Path("README.md"),]
     rv = 0
     for path in paths:
         rv |= _generate_cli_usage(path, check=args.check)

@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  uvicorn:
+    build: .
+    command: uvicorn app:app --host 0.0.0.0 --no-access-log --interface asgi3
+    volumes:
+      - ./app.py:/app/app.py
+    ports:
+      - 8008:8000
+    networks:
+      - default
+      - bench
+
+  esg:
+    build: .
+    command: esg app:app --host 0.0.0.0 --no-access-log --interface asgi3
+    volumes:
+      - ./app.py:/app/app.py
+    ports:
+      - 8009:8000
+    networks:
+      - default
+      - bench
+
+  bench-uvicorn:
+    image: czerasz/wrk-json
+    command: wrk http://uvicorn:8000/ --latency -d 15 -t 4 -c 64
+    networks:
+      - bench
+    restart: "no"
+
+  bench-esg:
+    image: czerasz/wrk-json
+    command: wrk http://esg:8080/ --latency -d 15 -t 4 -c 64
+    networks:
+      - bench
+    restart: "no"
+
+networks:
+  bench: {}
