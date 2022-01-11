@@ -228,7 +228,7 @@ def print_version(ctx: click.Context, param: click.Parameter, value: bool) -> No
     "--limit-concurrency",
     type=int,
     default=None,
-    help="Maximum number of concurrent connections or tasks to allow, before issuing"
+    help="Maximum number of concurrent connections to allow, before issuing"
     " HTTP 503 responses.",
 )
 @click.option(

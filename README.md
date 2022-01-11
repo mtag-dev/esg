@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/mtag-dev/esg/">
-        <img src="https://github.com/mtag-dev/esg/raw/feature/ESG-3-documentation/docs/img/esg.png" alt="Enhanced Service Gateway" width="300"/>
+        <img src="https://github.com/mtag-dev/esg/raw/master/docs/img/esg.png" alt="Enhanced Service Gateway" width="300"/>
     </a>
 </p>
 <p align="center">
@@ -101,6 +101,46 @@ $ esg example:app
 
 ---
 
+## ASGI frameworks
+
+### Squall
+
+[Squall](https://github.com/mtag-dev/squall) framework which looks ahead.
+
+High performance API framework.
+
+### Starlette
+
+[Starlette](https://github.com/encode/starlette) is a lightweight ASGI framework/toolkit.
+
+It is ideal for building high performance asyncio services, and supports both HTTP and WebSockets.
+
+### Django Channels
+
+The ASGI specification was originally designed for use with [Django Channels](https://channels.readthedocs.io/en/latest/).
+
+Channels is a little different to other ASGI frameworks in that it provides
+an asynchronous frontend onto a threaded-framework backend. It allows Django
+to support WebSockets, background tasks, and long-running connections,
+with application code still running in a standard threaded context.
+
+### Quart
+
+[Quart](https://pgjones.gitlab.io/quart/) is a Flask-like ASGI web framework.
+
+### FastAPI
+
+[**FastAPI**](https://github.com/tiangolo/fastapi) is an API framework based on **Starlette** and **Pydantic**, heavily inspired by previous server versions of **APIStar**.
+
+You write your API function parameters with Python 3.6+ type declarations and get automatic data conversion, data validation, OpenAPI schemas (with JSON Schemas) and interactive API documentation UIs.
+
+### BlackSheep
+
+[BlackSheep](https://www.neoteroi.dev/blacksheep/) is a web framework based on ASGI, inspired by Flask and ASP.NET Core.
+
+Its most distinctive features are built-in support for dependency injection, automatic binding of parameters by request handler's type annotations, and automatic generation of OpenAPI documentation and Swagger UI.
+
+
 ## Usage
 
 The ESG command line tool is the easiest way to run your application...
@@ -168,9 +208,8 @@ Options:
                                   available, or '127.0.0.1'.
   --root-path TEXT                Set the ASGI 'root_path' for applications
                                   submounted below a given URL path.
-  --limit-concurrency INTEGER     Maximum number of concurrent connections or
-                                  tasks to allow, before issuing HTTP 503
-                                  responses.
+  --limit-concurrency INTEGER     Maximum number of concurrent connections to
+                                  allow, before issuing HTTP 503 responses.
   --backlog INTEGER               Maximum number of connections to hold in
                                   backlog
   --limit-max-requests INTEGER    Maximum number of requests to service before
@@ -477,48 +516,16 @@ $ hypercorn app:App
 
 ---
 
-## ASGI frameworks
+## Roadmap
 
-You can use ESG, Uvicorn, Daphne, or Hypercorn to run any ASGI framework.
-
-For small services you can also write ASGI applications directly.
-
-### Squall
-
-[Squall](https://github.com/mtag-dev/squall) framework which looks ahead.
-
-High performance API framework.
-
-### Starlette
-
-[Starlette](https://github.com/encode/starlette) is a lightweight ASGI framework/toolkit.
-
-It is ideal for building high performance asyncio services, and supports both HTTP and WebSockets.
-
-### Django Channels
-
-The ASGI specification was originally designed for use with [Django Channels](https://channels.readthedocs.io/en/latest/).
-
-Channels is a little different to other ASGI frameworks in that it provides
-an asynchronous frontend onto a threaded-framework backend. It allows Django
-to support WebSockets, background tasks, and long-running connections,
-with application code still running in a standard threaded context.
-
-### Quart
-
-[Quart](https://pgjones.gitlab.io/quart/) is a Flask-like ASGI web framework.
-
-### FastAPI
-
-[**FastAPI**](https://github.com/tiangolo/fastapi) is an API framework based on **Starlette** and **Pydantic**, heavily inspired by previous server versions of **APIStar**.
-
-You write your API function parameters with Python 3.6+ type declarations and get automatic data conversion, data validation, OpenAPI schemas (with JSON Schemas) and interactive API documentation UIs.
-
-### BlackSheep
-
-[BlackSheep](https://www.neoteroi.dev/blacksheep/) is a web framework based on ASGI, inspired by Flask and ASP.NET Core.
-
-Its most distinctive features are built-in support for dependency injection, automatic binding of parameters by request handler's type annotations, and automatic generation of OpenAPI documentation and Swagger UI.
+- Better security setting.
+  - Header timeout
+  - Body timeout (timeout between calling receive and data arrive)
+  - Headers size limit
+  - Request body size limit
+- Statistic
+- Cythonized WebSocket protocol
+- 
 
 
 [llhttp]: https://github.com/nodejs/llhttp
