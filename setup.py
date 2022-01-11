@@ -142,11 +142,11 @@ class httptools_build_ext(build_ext):
                 import Cython
             except ImportError:
                 raise RuntimeError(
-                    'please install Cython to compile httptools from source')
+                    'please install Cython to compile esg from source')
 
             if Cython.__version__ < '0.29':
                 raise RuntimeError(
-                    'httptools requires Cython version 0.29 or greater')
+                    'esg requires Cython version 0.29 or greater')
 
             from Cython.Build import cythonize
 
@@ -172,15 +172,6 @@ class httptools_build_ext(build_ext):
 
     def build_extensions(self):
         mod_parser, mod_flow_control = self.distribution.ext_modules
-        # if self.use_system_llhttp:
-        #     mod_parser.libraries.append('llhttp')
-        #     mod_parser.libraries.append('http_parser')
-        #
-        #     if sys.platform == 'darwin' and \
-        #             os.path.exists('/opt/local/include'):
-        #         # Support macports on Mac OS X.
-        #         mod_parser.include_dirs.append('/opt/local/include')
-        # else:
         mod_parser.include_dirs.append(
             str(ROOT / 'vendor' / 'llhttp' / 'include'))
         mod_parser.include_dirs.append(
@@ -210,17 +201,27 @@ setup(
     install_requires=minimal_requirements,
     include_package_data=True,
     classifiers=[
+        "Intended Audience :: Developers",
+        "Intended Audience :: System Administrators",
+        "Operating System :: POSIX",
+        "Operating System :: MacOS :: MacOS X",
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
-        "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
-        "Operating System :: OS Independent",
+        "Topic :: Internet",
         "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+        "Topic :: Software Development :: Libraries :: Application Frameworks",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development",
+        "Programming Language :: Python",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: Implementation :: CPython",
-        "Programming Language :: Python :: Implementation :: PyPy",
+        "Framework :: AsyncIO",
     ],
     entry_points="""
     [console_scripts]
