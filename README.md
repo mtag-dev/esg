@@ -1,10 +1,14 @@
 <p align="center">
+    <a href="https://github.com/mtag-dev/esg/">
+        <img src="https://github.com/mtag-dev/esg/tree/feature/ESG-3-documentation/docs/img/esg.png" alt="Enhanced Service Gateway" width="300"/>
+    </a>
+</p>
+<p align="center">
 <em>Enhanced Service Gateway.</em>
 </p>
 
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://github.com/mtag-dev/esg/blob/master/LICENSE.md)
 [![Coverage](https://img.shields.io/codecov/c/github/mtag-dev/esg?color=%2334D058)](https://pypi.org/project/esg/)
 [![Test](https://github.com/mtag-dev/esg/workflows/Test%20Suite/badge.svg?event=push&branch=master)](https://github.com/mtag-dev/esg/actions/workflows/test-suite.yml)
