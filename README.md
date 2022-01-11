@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/mtag-dev/esg/">
-        <img src="https://github.com/mtag-dev/esg/tree/feature/ESG-3-documentation/docs/img/esg.png" alt="Enhanced Service Gateway" width="300"/>
+        <img src="https://github.com/mtag-dev/esg/raw/feature/ESG-3-documentation/docs/img/esg.png" alt="Enhanced Service Gateway" width="300"/>
     </a>
 </p>
 <p align="center">
